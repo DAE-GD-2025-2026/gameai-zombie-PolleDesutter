@@ -39,7 +39,7 @@ public class DesutterPolleZombieRuntime : ModuleRules
 				"Slate",
 				"SlateCore",
 				"AIModule",
-				"StateTree",
+				"StateTreeModule",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
