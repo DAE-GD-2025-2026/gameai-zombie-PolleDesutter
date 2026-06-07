@@ -25,7 +25,9 @@ public class DesutterPolleZombieRuntime : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core", 
+				"StateTreeModule",
+				"GameplayTags",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -39,7 +41,8 @@ public class DesutterPolleZombieRuntime : ModuleRules
 				"Slate",
 				"SlateCore",
 				"AIModule",
-				"StateTreeModule",
+				"StateTreeModule", 
+				"GameAI_Zombie",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
