@@ -6,3 +6,7 @@ I found this a bit odd, since for FSM we kind of had to implement our own system
 
 So, my plan is to make AI behavior, only using Unreals StateTree's, since I have experience with them because of GroupProjects (GlobGlobKinght), where the StateTree Logic had to be in C++.
 The discovery that I can use these Unreal system is a lifesaver.
+
+
+To do rapid prototyping, I am going to start with Blueprints and then convert them to C++, once it feels ready.
+I am also going to be using the Blackboard with the StateTree.
