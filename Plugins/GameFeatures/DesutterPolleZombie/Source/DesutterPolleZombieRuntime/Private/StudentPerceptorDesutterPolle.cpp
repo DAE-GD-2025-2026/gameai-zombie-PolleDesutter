@@ -4,23 +4,27 @@
 #include "StudentPerceptorDesutterPolle.h"
 
 
-UStudentPerceptor::UStudentPerceptor()
+UStudentPerceptorDesutterPolle::UStudentPerceptorDesutterPolle()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	
+	// TODO add stuff here
 }
 
-void UStudentPerceptor::BeginPlay()
+void UStudentPerceptorDesutterPolle::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	if (auto PerceptionComp = GetOwner()->GetComponentByClass<UAIPerceptionComponent>())
 	{
-		PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &UStudentPerceptor::OnPerceptionUpdated);
+		PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &UStudentPerceptorDesutterPolle::OnPerceptionUpdated);
 	}
 }
 
-void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+void UStudentPerceptorDesutterPolle::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("Saw Something!")));
+	
+		
 }

@@ -11,13 +11,13 @@
 #include "StudentPerceptorDesutterPolle.generated.h"
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class DESUTTERPOLLEZOMBIERUNTIME_API UStudentPerceptor : public UActorComponent
+class DESUTTERPOLLEZOMBIERUNTIME_API UStudentPerceptorDesutterPolle : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	UStudentPerceptor();
+	UStudentPerceptorDesutterPolle();
 	
 	virtual void BeginPlay() override;
 
