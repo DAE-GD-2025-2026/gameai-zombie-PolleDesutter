@@ -10,6 +10,7 @@
 #include "Zombies/BaseZombie.h"
 
 #include "Components/StateTreeComponent.h"
+#include "StateTree/BlackboardKeys.h"
 
 UStudentPerceptorDesutterPolle::UStudentPerceptorDesutterPolle()
 {
@@ -74,18 +75,29 @@ void UStudentPerceptorDesutterPolle::OnPerceptionUpdated(AActor* Actor, FAIStimu
 		GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("Zombie!")));
 		
-		// Send Zombie Spotted Event (TEST DUMBIE)
 		FStateTreeEvent Event{ OnSpottedZombieTag };	
+		
+		BlackboardComponent->SetValueAsBool(BlackboardKeys::HasSeenEnemyRecently, true);
+		BlackboardComponent->SetValueAsFloat(BlackboardKeys::TimeSinceLastSeenEnemy, 0.0f);
+		
+		BlackboardComponent->SetValueAsVector(BlackboardKeys::ClosestEnemyPosition, Zombie->GetActorLocation());
 		
 		StateTreeComp->SendStateTreeEvent(Event);
 	}
 	const auto House = Cast<AHouse>(Actor);
-	if (Zombie)
+	if (House)
 	{
 		GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("House!")));
 		
-		// FBlackboard::TryGetBlackboardKeyValue<AActor>();
+		FStateTreeEvent Event{ OnFoundHouseTag };	
+		
+		BlackboardComponent->SetValueAsBool(BlackboardKeys::HasSeenEnemyRecently, true);
+		BlackboardComponent->SetValueAsFloat(BlackboardKeys::TimeSinceLastSeenEnemy, 0.0f);
+		
+		BlackboardComponent->SetValueAsVector(BlackboardKeys::ClosestEnemyPosition, Zombie->GetActorLocation());
+		
+		StateTreeComp->SendStateTreeEvent(Event);
 		
 	}
 	

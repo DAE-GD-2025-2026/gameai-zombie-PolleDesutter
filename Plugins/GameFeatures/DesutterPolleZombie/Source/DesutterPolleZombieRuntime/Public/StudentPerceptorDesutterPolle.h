@@ -28,7 +28,6 @@ public:
 	UFUNCTION()
 	virtual void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 	
-	
 private:
 	
 	const FGameplayTag OnFoundItemTag{ FGameplayTag::RequestGameplayTag(FName("Survivor.OnFoundItem"))};
