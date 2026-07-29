@@ -12,6 +12,8 @@
 #include "Perception/AISense_Damage.h"
 #include "StudentPerceptorDesutterPolle.generated.h"
 
+class UStateTreeComponent;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DESUTTERPOLLEZOMBIERUNTIME_API UStudentPerceptorDesutterPolle : public UActorComponent
 {
@@ -39,6 +41,9 @@ private:
 	const FStateTreeEvent OnFoundItem{ OnFoundItemTag };
 	const FStateTreeEvent OnHit{ OnHitTag };
 	
+	UPROPERTY()
+	UStateTreeComponent* StateTreeComp{};
+	UPROPERTY()
 	UBlackboardComponent* BlackboardComponent{};
 	
 };

@@ -3,31 +3,43 @@
 
 #include "StudentPerceptorDesutterPolle.h"
 
-#include "GameplayTagContainer.h"
-#include "StateTreeExecutionTypes.h"
 #include "SurvivorAIController.h"
 #include "BehaviorTree/ValueOrBBKey.h"
 #include "Items/BaseItem.h"
 #include "Village/House/House.h"
 #include "Zombies/BaseZombie.h"
 
+#include "Components/StateTreeComponent.h"
 
 UStudentPerceptorDesutterPolle::UStudentPerceptorDesutterPolle()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	
-	// TODO add stuff here
-	
 }
 
 void UStudentPerceptorDesutterPolle::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// Get StateTree
+	APawn* Pawn = Cast<APawn>(GetOwner());
+	if (AAIController* AIController = Cast<AAIController>(Pawn->GetOwner()))
+	{
+		UStateTreeComponent* StateTreeComponent = AIController->FindComponentByClass<UStateTreeComponent>();
+		if (!StateTreeComponent)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("StateTreeComponent not found!"));
+			return;
+		}
+		
+		StateTreeComp = StateTreeComponent;
+	}
+	
+	// Setup Perception System
 	if (auto PerceptionComp = GetOwner()->GetComponentByClass<UAIPerceptionComponent>())
 	{
 		PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &UStudentPerceptorDesutterPolle::OnPerceptionUpdated);
 	}
+	
 	
 	if (auto SurvivorController = Cast<ASurvivorAIController>(GetOwner()->GetInstigatorController()))
 	{
@@ -41,22 +53,12 @@ void UStudentPerceptorDesutterPolle::BeginPlay()
 	
 	}
 	
-	
-	
 }
 
 void UStudentPerceptorDesutterPolle::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("Saw Something!")));
-
-		UClass* StateTree = BlackboardComponent->GetValueAsClass("StateTree");
-		if (!StateTree)
-		{
-			GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
-	FString::Printf(TEXT("shit!")));
-			
-		}
 
 	const auto Item = Cast<ABaseItem>(Actor);
 	if (Item)
@@ -72,8 +74,10 @@ void UStudentPerceptorDesutterPolle::OnPerceptionUpdated(AActor* Actor, FAIStimu
 		GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("Zombie!")));
 		
-		// FBlackboard::TryGetBlackboardKeyValue<AActor>();
+		// Send Zombie Spotted Event (TEST DUMBIE)
+		FStateTreeEvent Event{ OnSpottedZombieTag };	
 		
+		StateTreeComp->SendStateTreeEvent(Event);
 	}
 	const auto House = Cast<AHouse>(Actor);
 	if (Zombie)
