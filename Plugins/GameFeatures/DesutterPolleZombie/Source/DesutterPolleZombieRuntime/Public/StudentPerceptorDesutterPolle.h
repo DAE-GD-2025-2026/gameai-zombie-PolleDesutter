@@ -24,25 +24,4 @@ public:
 	UStudentPerceptorDesutterPolle();
 	
 	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	virtual void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
-	
-private:
-	
-	const FGameplayTag OnFoundItemTag{ FGameplayTag::RequestGameplayTag(FName("Survivor.OnFoundItem"))};
-	const FGameplayTag OnFoundHouseTag{ FGameplayTag::RequestGameplayTag(FName("Survivor.OnFoundHouse"))};
-	const FGameplayTag OnSpottedZombieTag{ FGameplayTag::RequestGameplayTag(FName("Survivor.OnSpottedZombie"))};
-	const FGameplayTag OnHitTag{ FGameplayTag::RequestGameplayTag(FName("Survivor.OnHit"))};
-	
-	const FStateTreeEvent OnSpottedZombie{ OnSpottedZombieTag };
-	const FStateTreeEvent OnFoundHouse{ OnFoundHouseTag };
-	const FStateTreeEvent OnFoundItem{ OnFoundItemTag };
-	const FStateTreeEvent OnHit{ OnHitTag };
-	
-	UPROPERTY()
-	UStateTreeComponent* StateTreeComp{};
-	UPROPERTY()
-	UBlackboardComponent* BlackboardComponent{};
-	
 };
