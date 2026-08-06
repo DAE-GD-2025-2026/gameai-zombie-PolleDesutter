@@ -92,12 +92,14 @@ void UStudentPerceptorDesutterPolle::OnPerceptionUpdated(AActor* Actor, FAIStimu
 		
 		FStateTreeEvent Event{ OnFoundHouseTag };	
 		
+		/*
 		BlackboardComponent->SetValueAsBool(BlackboardKeys::HasSeenEnemyRecently, true);
 		BlackboardComponent->SetValueAsFloat(BlackboardKeys::TimeSinceLastSeenEnemy, 0.0f);
 		
 		BlackboardComponent->SetValueAsVector(BlackboardKeys::ClosestEnemyPosition, Zombie->GetActorLocation());
 		
 		StateTreeComp->SendStateTreeEvent(Event);
+		*/
 		
 	}
 	
