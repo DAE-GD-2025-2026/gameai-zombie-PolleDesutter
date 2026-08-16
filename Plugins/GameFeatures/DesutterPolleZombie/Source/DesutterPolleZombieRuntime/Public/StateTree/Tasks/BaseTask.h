@@ -10,10 +10,13 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(ABSTRACT)
 class DESUTTERPOLLEZOMBIERUNTIME_API UBaseTask : public UStateTreeTaskBlueprintBase
 {
 	GENERATED_BODY()
+public:
+	
+UBaseTask(const FObjectInitializer& ObjectInitializer);
 protected:
 	UPROPERTY(EditAnywhere, Category="Context")
 	AAIController* SurvivorController{};
