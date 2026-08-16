@@ -15,19 +15,20 @@ UCLASS()
 class DESUTTERPOLLEZOMBIERUNTIME_API USortInventoryTask final : public UBaseTask
 {
 	GENERATED_BODY()
-
-protected:
+	
+public:
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context,
 		const FStateTreeTransitionResult& Transition) override;
 	
 	virtual void ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) override;
 	
-public:
+	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, const float DeltaTime) override;
+	
+	
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInventoryComponent* Inventory{};
 	
 private:
 	bool IsInventoryEmpty() const;
-	
-	
+
 };

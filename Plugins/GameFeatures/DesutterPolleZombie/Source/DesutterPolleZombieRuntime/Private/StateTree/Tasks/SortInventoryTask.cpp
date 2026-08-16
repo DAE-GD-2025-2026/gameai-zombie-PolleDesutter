@@ -3,37 +3,44 @@
 
 #include "StateTree/Tasks/SortInventoryTask.h"
 
+#include "HelperFunctions.h"
 #include "Common/InventoryComponent.h"
+
 
 
 EStateTreeRunStatus USortInventoryTask::EnterState(FStateTreeExecutionContext& Context,
                                                    const FStateTreeTransitionResult& Transition)
 {
+	if (!bShouldCallTick)
+	{
+		HelperFunctions::LogError("Sort Inventory: Failed To Enable Tick");
+	}
 	
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Sort Inventory"));
+	HelperFunctions::LogSuccess("Sort Inventory: Enter State");
+	
 	if (!Inventory)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Sort Inventory: Inventory Not Valid"));
-		UE_LOG(LogTemp, Warning, TEXT("Inventory is null"));
+		HelperFunctions::LogError("Sort Inventory: Inventory Is Null");
 		return EStateTreeRunStatus::Running;
 	}
 	
 	if (IsInventoryEmpty())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, TEXT("Sort Inventory: Inventory Is Empty"));
+		HelperFunctions::LogWarning("Sort Inventory: Inventory Is Empty");
 		return EStateTreeRunStatus::Running;
 	}
-	
-	
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Sort Inventory: Grab Item"));
+
+
+	HelperFunctions::LogSuccess("Sort Inventory: Grab Item");
 	Inventory->GrabItem(0, nullptr);	
 	
 	
-	return Super::EnterState(Context, Transition);
+	return EStateTreeRunStatus::Running;
 }
 
 void USortInventoryTask::ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition)
 {
+	HelperFunctions::LogSuccess("Inventory: Exit State");
 	Super::ExitState(Context, Transition);
 }
 
@@ -48,4 +55,10 @@ bool USortInventoryTask::IsInventoryEmpty() const
 	}
 	
 	return true;	
+}
+
+EStateTreeRunStatus USortInventoryTask::Tick(FStateTreeExecutionContext& Context, const float DeltaTime)
+{
+	HelperFunctions::LogError("Sort Inventory: Tick");
+	return EStateTreeRunStatus::Running;
 }
