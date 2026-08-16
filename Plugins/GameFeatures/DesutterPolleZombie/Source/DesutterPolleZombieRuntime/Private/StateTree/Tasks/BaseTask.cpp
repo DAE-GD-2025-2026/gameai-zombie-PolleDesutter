@@ -2,10 +2,3 @@
 
 
 #include "StateTree/Tasks/BaseTask.h"
-
-
-UBaseTask::UBaseTask(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-{
-	bShouldCallTick = true;
-}

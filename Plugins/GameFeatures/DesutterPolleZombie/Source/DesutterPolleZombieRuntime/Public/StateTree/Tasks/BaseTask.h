@@ -7,22 +7,25 @@
 #include "Blueprint/StateTreeTaskBlueprintBase.h"
 #include "BaseTask.generated.h"
 
-/**
- * 
- */
-UCLASS(ABSTRACT)
-class DESUTTERPOLLEZOMBIERUNTIME_API UBaseTask : public UStateTreeTaskBlueprintBase
+
+USTRUCT()
+struct FBaseTaskInstanceData
 {
 	GENERATED_BODY()
-public:
-	
-UBaseTask(const FObjectInitializer& ObjectInitializer);
-protected:
-	UPROPERTY(EditAnywhere, Category="Context")
-	AAIController* SurvivorController{};
-	
-	UPROPERTY(EditAnywhere, Category="Context")
-	APawn* SurvivorCharacter{};
-	
-	
+
+	UPROPERTY(EditAnywhere, Category = "Context")
+	TObjectPtr<AAIController> SurvivorController{};
+
+	UPROPERTY(EditAnywhere, Category = "Context")
+	TObjectPtr<APawn> SurvivorCharacter{};
 };
+
+USTRUCT()
+struct DESUTTERPOLLEZOMBIERUNTIME_API FBaseTask : public FStateTreeTaskCommonBase
+{
+	GENERATED_BODY()
+
+	using FInstanceDataType = FBaseTaskInstanceData;
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
+};
+
