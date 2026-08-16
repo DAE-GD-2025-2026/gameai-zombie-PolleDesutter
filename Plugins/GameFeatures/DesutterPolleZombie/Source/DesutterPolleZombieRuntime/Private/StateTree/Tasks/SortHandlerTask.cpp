@@ -55,7 +55,7 @@ EStateTreeRunStatus FSortHandlerTask::Tick(FStateTreeExecutionContext& Context, 
 
 void FSortHandlerTask::CleanUpInventory(FInstanceDataType& InstanceData)
 {
-		// CleanUp Inventory
+	// CleanUp Inventory
 	if (IsInventoryEmpty(*InstanceData.Inventory))
 	{
 		HelperFunctions::LogVerbose("Inventory: Empty");
@@ -70,7 +70,7 @@ void FSortHandlerTask::HandleGrabItem(FInstanceDataType& InstanceData)
 	// Grab Item	
 	if (!InstanceData.AcquiredItem)
 	{
-		HelperFunctions::LogWarning("Inventory: Acquired Item is Null");
+		// HelperFunctions::LogWarning("Inventory: Acquired Item is Null");
 		return;
 	}
 	if (!Cast<ABaseItem>(InstanceData.AcquiredItem))
@@ -80,7 +80,32 @@ void FSortHandlerTask::HandleGrabItem(FInstanceDataType& InstanceData)
 	}
 	
 	ABaseItem* AcquiredItem = Cast<ABaseItem>(InstanceData.AcquiredItem);
-	HelperFunctions::LogError("Inventory: Acquired Item is " + AcquiredItem->GetName());	
+	if (!AcquiredItem)
+	{
+		HelperFunctions::LogError("Bad");
+	}
+	const float DistanceToItem = FVector::Distance(AcquiredItem->GetActorLocation(), 
+		InstanceData.SurvivorCharacter->GetActorLocation());
+	
+	if (DistanceToItem > InstanceData.Inventory->GetPickupRange())
+	{
+	
+	// HelperFunctions::LogSuccess("Too far");
+		return;
+	}	
+	
+	HelperFunctions::LogSuccess("Close enough to item");
+	const std::optional<int> FreeItemSlot = GetFreeItemSlot(*InstanceData.Inventory);
+	if (FreeItemSlot.has_value())
+	{
+		bool PickedUp = InstanceData.Inventory->GrabItem(FreeItemSlot.value(), AcquiredItem);
+		if (PickedUp)
+		{
+			InstanceData.AcquiredItem = nullptr;
+			HelperFunctions::LogSuccess("Picked Up Item\n\n\n");
+		}
+		
+	}
 }
 
 
