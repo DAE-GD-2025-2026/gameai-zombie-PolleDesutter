@@ -25,3 +25,9 @@ void HelperFunctions::LogError(const FString& StringText)
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, StringText);
 }
 
+void HelperFunctions::LogVerbose(const FString& StringText)
+{
+	UE_LOGFMT(LogTemp, Verbose, "{Text}", StringText);
+	// GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Black, StringText);
+}
+
