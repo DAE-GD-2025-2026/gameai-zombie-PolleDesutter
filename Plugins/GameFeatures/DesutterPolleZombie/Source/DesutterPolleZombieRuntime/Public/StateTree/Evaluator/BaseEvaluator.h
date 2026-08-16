@@ -7,19 +7,26 @@
 #include "Blueprint/StateTreeEvaluatorBlueprintBase.h"
 #include "BaseEvaluator.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class DESUTTERPOLLEZOMBIERUNTIME_API UBaseEvaluator : public UStateTreeEvaluatorBlueprintBase
+
+USTRUCT()
+struct FBaseEvaluatorInstanceData
 {
 	GENERATED_BODY()
-protected:
-	UPROPERTY(EditAnywhere, Category="Context")
-	AAIController* SurvivorController{};
-	
-	UPROPERTY(EditAnywhere, Category="Context")
-	APawn* SurvivorCharacter{};
-	
-	
+
+	UPROPERTY(EditAnywhere, Category = "Context")
+	TObjectPtr<AAIController> SurvivorController{};
+
+	UPROPERTY(EditAnywhere, Category = "Context")
+	TObjectPtr<APawn> SurvivorCharacter{};
 };
+
+
+USTRUCT()
+struct DESUTTERPOLLEZOMBIERUNTIME_API FBaseEvaluator : public FStateTreeEvaluatorCommonBase
+{
+	GENERATED_BODY()
+
+	using FInstanceDataType = FBaseEvaluatorInstanceData;
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
+};
+
