@@ -44,6 +44,10 @@ struct DESUTTERPOLLEZOMBIERUNTIME_API FSortHandlerTask final : public FBaseTask
 	
 	
 private:
+	static void CleanUpInventory(FInstanceDataType& InstanceData);
+	static void HandleGrabItem(FInstanceDataType& InstanceData);	
+	
+	
 	static bool IsInventoryEmpty(const UInventoryComponent& Inventory);
 	static bool IsInventoryFull(const UInventoryComponent& Inventory);
 	

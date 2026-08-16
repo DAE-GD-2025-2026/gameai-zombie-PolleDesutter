@@ -47,31 +47,43 @@ void FSortHandlerTask::ExitState(FStateTreeExecutionContext& Context, const FSta
 EStateTreeRunStatus FSortHandlerTask::Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const
 {
 	FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
+	CleanUpInventory(InstanceData);
+	HandleGrabItem(InstanceData);
 	
-	// CleanUp Inventory
+	return EStateTreeRunStatus::Running;
+}
+
+void FSortHandlerTask::CleanUpInventory(FInstanceDataType& InstanceData)
+{
+		// CleanUp Inventory
 	if (IsInventoryEmpty(*InstanceData.Inventory))
 	{
 		HelperFunctions::LogVerbose("Inventory: Empty");
-		return EStateTreeRunStatus::Running;
+		return;
 	}
 	
 	RemoveGarbage(*InstanceData.Inventory);
-	
-	
-	
+}
+
+void FSortHandlerTask::HandleGrabItem(FInstanceDataType& InstanceData)
+{
 	// Grab Item	
-	if (!InstanceData.AcquiredItem || !Cast<ABaseItem>(InstanceData.AcquiredItem))
+	// if (!InstanceData.AcquiredItem || !Cast<ABaseItem>(InstanceData.AcquiredItem))
+	if (!InstanceData.AcquiredItem)
 	{
 		HelperFunctions::LogWarning("Inventory: Acquired Item is Null");
-		return EStateTreeRunStatus::Running;
+		return;
+	}
+	if (!Cast<ABaseItem>(InstanceData.AcquiredItem))
+	{
+		HelperFunctions::LogError("Inventory: Acquired Item is Not BaseItem");
+		return;
 	}
 	
 	ABaseItem* AcquiredItem = Cast<ABaseItem>(InstanceData.AcquiredItem);
 	HelperFunctions::LogError("Inventory: Acquired Item is " + AcquiredItem->GetName());	
-	
-	
-	return EStateTreeRunStatus::Running;
 }
+
 
 bool FSortHandlerTask::IsInventoryEmpty(const UInventoryComponent& Inventory)
 {
