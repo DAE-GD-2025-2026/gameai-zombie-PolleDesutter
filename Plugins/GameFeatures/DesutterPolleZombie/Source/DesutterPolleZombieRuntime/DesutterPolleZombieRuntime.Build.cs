@@ -30,7 +30,9 @@ public class DesutterPolleZombieRuntime : ModuleRules
 				"GameplayTags",
 				"AIModule",
 				"StateTreeModule",
-				"GameplayStateTreeModule"
+				"GameplayStateTreeModule",
+                "GameAI_Zombie"
+
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -42,8 +44,7 @@ public class DesutterPolleZombieRuntime : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"Slate",
-				"SlateCore", 
-				"GameAI_Zombie",
+				"SlateCore"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
