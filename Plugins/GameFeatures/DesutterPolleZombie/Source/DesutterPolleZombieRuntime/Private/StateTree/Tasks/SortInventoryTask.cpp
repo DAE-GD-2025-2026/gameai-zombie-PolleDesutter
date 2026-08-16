@@ -2,14 +2,15 @@
 
 
 #include "StateTree/Tasks/SortInventoryTask.h"
+#include "StateTreeExecutionContext.h"
 
 #include "HelperFunctions.h"
 #include "Common/InventoryComponent.h"
 
 
 
-EStateTreeRunStatus USortInventoryTask::EnterState(FStateTreeExecutionContext& Context,
-                                                   const FStateTreeTransitionResult& Transition)
+EStateTreeRunStatus FSortInventoryTask::EnterState(FStateTreeExecutionContext& Context,
+                                                   const FStateTreeTransitionResult& Transition) const
 {
 	if (!bShouldCallTick)
 	{
@@ -18,13 +19,14 @@ EStateTreeRunStatus USortInventoryTask::EnterState(FStateTreeExecutionContext& C
 	
 	HelperFunctions::LogSuccess("Sort Inventory: Enter State");
 	
-	if (!Inventory)
+	FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
+	if (!InstanceData.Inventory)
 	{
 		HelperFunctions::LogError("Sort Inventory: Inventory Is Null");
-		return EStateTreeRunStatus::Running;
+		return EStateTreeRunStatus::Failed;	
 	}
 	
-	if (IsInventoryEmpty())
+	if (IsInventoryEmpty(*InstanceData.Inventory))
 	{
 		HelperFunctions::LogWarning("Sort Inventory: Inventory Is Empty");
 		return EStateTreeRunStatus::Running;
@@ -32,21 +34,26 @@ EStateTreeRunStatus USortInventoryTask::EnterState(FStateTreeExecutionContext& C
 
 
 	HelperFunctions::LogSuccess("Sort Inventory: Grab Item");
-	Inventory->GrabItem(0, nullptr);	
-	
+	InstanceData.Inventory->GrabItem(0, nullptr);	
 	
 	return EStateTreeRunStatus::Running;
 }
 
-void USortInventoryTask::ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition)
+void FSortInventoryTask::ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const
 {
 	HelperFunctions::LogSuccess("Inventory: Exit State");
 	Super::ExitState(Context, Transition);
 }
 
-bool USortInventoryTask::IsInventoryEmpty() const
+EStateTreeRunStatus FSortInventoryTask::Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const
 {
-	for (const ABaseItem* Item : Inventory->GetInventory())
+	// HelperFunctions::LogError("Sort Inventory: Tick");
+	return EStateTreeRunStatus::Running;
+}
+
+bool FSortInventoryTask::IsInventoryEmpty(const UInventoryComponent& Inventory)
+{
+	for (const ABaseItem* Item :  Inventory.GetInventory())
 	{
 		if (Item)
 		{
@@ -57,8 +64,3 @@ bool USortInventoryTask::IsInventoryEmpty() const
 	return true;	
 }
 
-EStateTreeRunStatus USortInventoryTask::Tick(FStateTreeExecutionContext& Context, const float DeltaTime)
-{
-	HelperFunctions::LogError("Sort Inventory: Tick");
-	return EStateTreeRunStatus::Running;
-}

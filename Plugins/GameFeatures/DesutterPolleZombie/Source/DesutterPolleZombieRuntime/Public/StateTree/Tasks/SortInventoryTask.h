@@ -8,27 +8,36 @@
 
 
 class UInventoryComponent;
-/**
- * 
- */
-UCLASS()
-class DESUTTERPOLLEZOMBIERUNTIME_API USortInventoryTask final : public UBaseTask
+
+USTRUCT()
+struct FSortInventoryTaskInstanceData : public FBaseTaskInstanceData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInventoryComponent* Inventory{};
+};
+
+
+USTRUCT()
+struct DESUTTERPOLLEZOMBIERUNTIME_API FSortInventoryTask final : public FBaseTask
 {
 	GENERATED_BODY()
 	
-public:
+	using FInstanceDataType = FSortInventoryTaskInstanceData;
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
+	
+	
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context,
-		const FStateTreeTransitionResult& Transition) override;
+		const FStateTreeTransitionResult& Transition) const override;
 	
-	virtual void ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) override;
+	virtual void ExitState(FStateTreeExecutionContext& Context,
+		const FStateTreeTransitionResult& Transition) const override;
 	
-	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, const float DeltaTime) override;
+	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const override;
 	
-	
-	UPROPERTY(EditAnywhere, Category="Input")
-	UInventoryComponent* Inventory{};
 	
 private:
-	bool IsInventoryEmpty() const;
+	static bool IsInventoryEmpty(const UInventoryComponent& Inventory);
 
 };
