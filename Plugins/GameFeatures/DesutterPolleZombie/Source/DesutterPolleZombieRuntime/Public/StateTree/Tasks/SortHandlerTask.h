@@ -18,10 +18,10 @@ struct FInventoryHandlerTaskInstanceData : public FBaseTaskInstanceData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInventoryComponent* Inventory{};
+	TObjectPtr<UInventoryComponent> Inventory{};
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	 AActor* AcquiredItem{};
+	 TObjectPtr<AActor> AcquiredItem{};
 };
 
 

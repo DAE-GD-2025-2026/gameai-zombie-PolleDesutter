@@ -68,7 +68,6 @@ void FSortHandlerTask::CleanUpInventory(FInstanceDataType& InstanceData)
 void FSortHandlerTask::HandleGrabItem(FInstanceDataType& InstanceData)
 {
 	// Grab Item	
-	// if (!InstanceData.AcquiredItem || !Cast<ABaseItem>(InstanceData.AcquiredItem))
 	if (!InstanceData.AcquiredItem)
 	{
 		HelperFunctions::LogWarning("Inventory: Acquired Item is Null");
